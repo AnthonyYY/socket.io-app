@@ -10,7 +10,8 @@ io.sockets.on('connection',function(socket){
       socket.broadcast.emit('publicPing',{username: socket.username});
     });
     socket.on('privatePing',function(data){
-      io.sockets.connected[data.socket].emit('ping',{username: socket.username,priv: true});
+      io.sockets.connected[data.socket].emit('publicPing',{username: socket.username,priv: true});
+      console.log('trigger private ping')
     });
   });
 });
@@ -22,11 +23,11 @@ io.of('/vip').on('connection',function(socket){
       username: data.username,
       socket: socket.id
     });
-    socket.on('piing',function(){
-      socket.broadcast.emit('piing',{username:socket.username});
+    socket.on('publicPing',function(){
+      socket.broadcast.emit('publicPing',{username:socket.username});
     });
     socket.on('privatePing',function(data){
-      io.of('/vip').connected[data.socket].emit('piing',{username: socket.username,priv: true});
+      io.of('/vip').connected[data.socket].emit('publicPing',{username: socket.username,priv: true});
     });
   });
 });
